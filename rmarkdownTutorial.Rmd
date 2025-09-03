@@ -1,0 +1,27 @@
+---
+title: "R Markdown Tutorial"
+author: "Matt Hatami"
+date: "2025-09-03"
+output: html_document
+---
+If we don't see rmarkdown on the File dropdown menu, run below codes in an R script:
+install.packages("rmarkdown")
+install.packages("knitr")
+
+
+we can use both python and R in this rmarkdown files, a simple example of it would be:
+
+```{r}
+# R code
+r_vec <- c(1, 2, 3, 4, 5)
+mean(r_vec)
+```
+
+
+```{python}
+# Python chunk
+import numpy as np
+py_vec = np.array([1, 2, 3, 4, 5])
+print(py_vec.mean())
+```
+
