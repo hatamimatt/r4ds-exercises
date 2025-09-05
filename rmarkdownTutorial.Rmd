@@ -9,6 +9,29 @@ install.packages("rmarkdown")
 install.packages("knitr")
 
 
+
+we can make headings with #s
+
+# Heading 1
+## Heading 2
+### Heading 3
+etc.
+
+we can make the text *italic*, **bold**, or ***bold italic***
+
+we can make a numbered list:
+
+1. list item 1
+2. list item 2
+
+we can make bullet points with either - or *
+
+- bullte point with -
+* bullet point with *
+
+we can also add links to the document. For example, [here is a link to my github](https://www.github.com/hatamimatt)
+
+
 we can use both python and R in this rmarkdown files, a simple example of it would be:
 
 ```{r}
@@ -18,10 +41,14 @@ mean(r_vec)
 ```
 
 
+
 ```{python}
 # Python chunk
 import numpy as np
 py_vec = np.array([1, 2, 3, 4, 5])
 print(py_vec.mean())
 ```
+
+
+
 
