@@ -1,0 +1,120 @@
+---
+title: "R4DataScience#1"
+author: "Matt Hatami"
+date: "2025-09-05"
+output: html_document
+---
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(warning = FALSE, message = FALSE)
+```
+
+
+
+### Data Visualization
+
+This course uses **ggplot2** for visualization and making graphs.
+**ggplot2** is one of the packages within tidyverse. we can load the whole family package with one line of code:
+```{r}
+library(tidyverse)
+```
+If we run that code and got an error saying `there is no package called 'tidyverse', we need to first install it, and then run 'library(tidyverse)` again.
+```{r}
+install.packages("tidyverse")
+library(tidyverse)
+```
+
+In this tutorial, we will use **palmerpenguins** dataset, to do so, we should install its library
+```{r}
+library(palmerpenguins)
+penguins
+```
+
+
+In a dataframe, we always have variables on the columns, and observations in rows.
+
+When we want to start working with a DataFrame, before getting our hands dirty, we might want to have an idea of what it looks like. To do so, we can use either `View(penguins)`, which opens an interactive window that you can scroll and look through the dataset. or we can use `glimpse(penguins)`, which shows all the variables in rows and the first few observations of each variable.
+```{r}
+View(penguins)
+glimpse(penguins)
+```
+
+To use *ggplot2* we begin a plot with the function `ggplot(data=dataset_name)`. Then we add layers to it. One of the arguments that of `ggplot()` is the mapping argument, and it's always defined in the `aes()` function. At this point, we have plotted an empty figure, and mapped our x and y axis to two variables of the dataset. But we haven't put the data on the plot yet. To add the actual data to the plot, we use some functions that start with `geom_`. In this case, we want to see a point for each observation (row) of the dataset on the plot, so we simply add `+ geom_point()` to the code. 
+
+
+```{r}
+ggplot(data=penguins,
+       mapping=aes(x=flipper_length_mm, y=body_mass_g)) + geom_point()
+```
+
+There are many different types of geoms () such as geom_bars(), geom_line(), etc. We can find a complete list of them by running `help(package="ggplot2")`.
+
+Now, we can see a linear relationship between two variable of choice, but we want to know if this relationship varies with species or not. For that purpose, we can simply add `color = species` to the `aes()` function and repeat the plot.
+
+
+```{r}
+ggplot(
+  data=penguins,
+  mapping=aes(x=flipper_length_mm, y=body_mass_g, color=species)) + geom_point()
+```
+
+We can even add one more layer to the plot. Let's add a smooth curve displaying the relationship between body mass and flipper length. To do so, we want to add a new layer similar to what we did with `geom_point()`, this one is called `geom_smooth(lm)` in which we want to draw the best fit based on LinearMethod (lm). Let's try it.
+
+```{r}
+ggplot(
+  data = penguins,
+  mapping = aes(x=flipper_length_mm, y=body_mass_g, color=species)) + 
+  geom_point() + 
+  geom_smooth(method="lm")
+```
+
+
+Thinking about people with color blindness, it's a good practice to keep the shapes different as well.
+we can do that with adding `shape=species` to the `aes()` function. We can define color and shape of the points in 2 different levels, *global* and *local*. 
+
+
+
+In this plot, the aesthetic mappings are defined in `ggplot()` at the *global level*, so they are passed out to both subsequent geoms (points and lines).  
+
+```{r}
+ggplot(
+  data=penguins,
+  mapping = aes(x=flipper_length_mm, y=body_mass_g, color=species, shape = species)) + 
+  geom_point() + 
+  geom_smooth(method="lm")
+```
+
+
+
+Sometimes this is not exactly what we need. We might want aesthetic mappings at *local level*. For example, in the first plot here, we wanted to have the points to be colored based on species, but we don't want the lines to be separated out for them. So we should specify `color = species` only for `geom_point()`.
+
+```{r}
+ggplot(
+  data=penguins,
+  mapping = aes(x=flipper_length_mm, y=body_mass_g)) + 
+  geom_point(mapping = aes(color=species, shape = species)) + 
+  geom_smooth(method="lm")
+```
+
+we can improve the plot yet more! One of the functions that are available in ggplot is the `labs()` function. with this function, we can give title, subtitle, and labels to different axis. Also we can improve the color palette to be colorblind safe with the `scale_color_colorblind()` function. Let's try them both:
+
+
+```{r}
+library(ggplot2)      # core plotting package
+library(palmerpenguins) # for the penguins dataset
+library(ggthemes)     # if you want scale_color_colorblind()
+ggplot(
+  data = penguins,
+  mapping = aes(x = flipper_length_mm, y = body_mass_g)
+) +
+  geom_point(aes(color = species, shape = species)) +
+  geom_smooth(method = "lm") +
+  labs(
+    title = "Body mass and flipper length",
+    subtitle = "Dimensions for Adelie, Chinstrap, and Gentoo Penguins",
+    x = "Flipper length (mm)", y = "Body mass (g)",
+    color = "Species", shape = "Species"
+  ) +
+  scale_color_colorblind()
+```
+
+
